@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warehouse-svc
+  labels:
+    app: warehouse-svc
+    name: warehouse-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warehouse-svc
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: warehouse-svc
+    spec:
+      containers:
+        - image: shopnow/warehouse-svc:latest
+          name: warehouse-svc
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: warehouse-svc
+  labels:
+    account: details
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: warehouse-svc
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

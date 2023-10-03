@@ -2,11 +2,11 @@ setup:
 	eval $(minikube -p minikube docker-env)
 
 clean:setup
-	docker rmi shopnow/order-svc || true
 	kubectl delete -f ./order-svc-deployment.yaml || true
+	docker rmi shopnow/order-svc || true
 
 build: clean
-	./gradlew build
+	./gradlew clean build
 	docker build -t shopnow/order-svc:latest .
 
 deploy: build

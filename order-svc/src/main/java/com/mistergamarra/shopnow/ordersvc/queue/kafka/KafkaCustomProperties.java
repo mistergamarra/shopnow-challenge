@@ -3,6 +3,7 @@ package com.mistergamarra.shopnow.ordersvc.queue.kafka;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.CommonClientConfigs;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,8 @@ import java.util.*;
 @Getter
 @Setter
 public class KafkaCustomProperties {
-    private List<String> bootstrapServers = new ArrayList<>(Collections.singletonList("localhost:9092"));
+    @Value("${spring.kafka.producer.bootstrap-servers}") String boostrapServer;
+    private List<String> bootstrapServers = new ArrayList<>(Collections.singletonList("kafka-cluster.default.svc.cluster.local:9092"));
     private String clientId;
     private Map<String, String> properties = new HashMap<>();
     private Map<String, KafkaProperties.Producer> producer;
