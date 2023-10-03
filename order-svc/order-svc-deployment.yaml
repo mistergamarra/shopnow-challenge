@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-svc
+  labels:
+    app: order-svc
+    name: order-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-svc
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: order-svc
+    spec:
+      containers:
+        - image: shopnow/order-svc:latest
+          name: order-svc
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: order-svc
+  labels:
+    account: details
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: order-svc
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
